@@ -1,6 +1,5 @@
 #include <numeric>
 #include "matching2D.hpp"
-
 using namespace std;
 
 // Find best matches for keypoints in two camera images based on several matching methods
@@ -18,10 +17,8 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
         matcher = cv::BFMatcher::create(normType, crossCheck);
 
     } else if (matcherType.compare("MAT_FLANN") == 0) {
-        // OpenCV bug workaround : convert binary descriptors to floating point due to a bug in current OpenCV implementation
         if (descSource.type() !=CV_32F) {
             descSource.convertTo(descSource, CV_32F);
-            // descRef.convertTo(descRef, CV_32F);
         }
         if (descRef.type() !=CV_32F) {
             descRef.convertTo(descRef, CV_32F);
@@ -41,7 +38,7 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     } else if (selectorType.compare("SEL_KNN") == 0) { // k nearest neighbors (k=2)
         vector<vector<cv::DMatch>> knn_matches;
         matcher->knnMatch(descSource, descRef, knn_matches, 2);
-        //-- Filter matches using the Lowe's ratio test
+        // Filter matches using the Lowe's ratio test
         double minDescDistRatio = 0.8;
         for (auto it = knn_matches.begin(); it != knn_matches.end(); ++it) {
             if ((*it)[0].distance < minDescDistRatio * (*it)[1].distance) {
@@ -115,7 +112,8 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     extractor->compute(img, keypoints, descriptors);
 }
 
-// Detect keypoints in image
+// Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.
+// Detect keypoints in image using the traditional Shi-Thomasi detector
 void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis) {
     // compute detector parameters based on image size
     int blockSize = 6;       //  size of an average block for computing a derivative covariation matrix over each pixel neighborhood
@@ -190,14 +188,14 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
                     if (kptOverlap > maxOverlap) {
                         bOverlap = true;
                         if (newKeyPoint.response >
-                            (*it).response) {                      // if overlap is >t AND response is higher for new kpt
-                            *it = newKeyPoint; // replace old key point with new one
+                            (*it).response) {       
+                            *it = newKeyPoint; 
                             break;             // quit loop over keypoints
                         }
                     }
                 }
-                if (!bOverlap) {                                     // only add new key point if no overlap has been found in previous NMS
-                    keypoints.push_back(newKeyPoint); // store new keypoint in dynamic list
+                if (!bOverlap) {           
+                    keypoints.push_back(newKeyPoint); 
                 }
             }
         } // eof loop over cols
@@ -216,7 +214,6 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
 }
 
 void detKeypointsModern(vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::string detectorType, bool bVis) {
-    // select appropriate descriptor
     cv::Ptr<cv::FeatureDetector> detector;
     if (detectorType.compare("BRISK") == 0) {
         int threshold = 30;        // FAST/AGAST detection threshold score.
