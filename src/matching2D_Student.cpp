@@ -382,7 +382,7 @@ cv::Mat &img, cv::Mat &descriptors)
     float 	threshold = 0.001f;
     int 	nOctaves = 4;
     int 	nOctaveLayers = 4;
-    int 	diffusivity = cv::KAZE::DIFF_PM_G2;
+    auto 	diffusivity = cv::KAZE::DIFF_PM_G2;
     extractor = cv::AKAZE::create(descriptor_type,descriptor_size,descriptor_channels,threshold,nOctaves,nOctaveLayers,diffusivity);
 }
 void descKeypointsSift(cv::Ptr<cv::DescriptorExtractor>& extractor,std::vector<cv::KeyPoint> &keypoints, 
