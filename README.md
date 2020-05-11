@@ -18,7 +18,7 @@ See the classroom instruction and code comments for more details on each of thes
   * Linux: make is installed by default on most Linux distros
   * Mac: [install Xcode command line tools to get make](https://developer.apple.com/xcode/features/)
   * Windows: [Click here for installation instructions](http://gnuwin32.sourceforge.net/packages/make.htm)
-* OpenCV >= 3.2
+* OpenCV >= 4.1.0
   * This must be compiled from source using the `-D OPENCV_ENABLE_NONFREE=ON` cmake flag for testing the SIFT and SURF detectors.
 * gcc/g++ >= 5.4
   * Linux: gcc / g++ is installed by default on most Linux distros
