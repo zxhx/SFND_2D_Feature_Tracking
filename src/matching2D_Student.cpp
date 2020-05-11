@@ -354,7 +354,7 @@ cv::Mat &img, cv::Mat &descriptors)
     int 	edgeThreshold = 31;
     int 	firstLevel = 0;
     int 	WTA_K = 2;
-    int 	scoreType = (int)cv::ORB::HARRIS_SCORE;
+    auto 	scoreType = cv::ORB::HARRIS_SCORE;
     int 	patchSize = 31;
     int 	fastThreshold = 20;
 
@@ -376,7 +376,7 @@ void descKeypointsAkaze(cv::Ptr<cv::DescriptorExtractor>& extractor,std::vector<
 cv::Mat &img, cv::Mat &descriptors)
 {
     // initialize parameters
-    int 	descriptor_type = (int)cv::AKAZE::DESCRIPTOR_MLDB;
+    auto 	descriptor_type = cv::AKAZE::DESCRIPTOR_MLDB;
     int 	descriptor_size = 0;
     int 	descriptor_channels = 3;
     float 	threshold = 0.001f;
