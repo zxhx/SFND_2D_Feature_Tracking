@@ -115,8 +115,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     extractor->compute(img, keypoints, descriptors);
 }
 
-// Implement detectors HARRIS, FAST, BRISK, ORB, AKAZE, and SIFT and make them selectable by setting a string accordingly.
-// Detect keypoints in image using the traditional Shi-Thomasi detector
+// Detect keypoints in image
 void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis) {
     // compute detector parameters based on image size
     int blockSize = 6;       //  size of an average block for computing a derivative covariation matrix over each pixel neighborhood
@@ -219,11 +218,11 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
 void detKeypointsModern(vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::string detectorType, bool bVis) {
     // select appropriate descriptor
     cv::Ptr<cv::FeatureDetector> detector;
-    if (detectorType.compare("BRISK") == 0) {
+    if (detectorType.compare("BRIEF") == 0) {
         int threshold = 30;        // FAST/AGAST detection threshold score.
         int octaves = 3;           // detection octaves (use 0 to do single scale)
         float patternScale = 1.0f; // apply this scale to the pattern used for sampling the neighbourhood of a keypoint.
-        detector = cv::BRISK::create(threshold, octaves, patternScale);
+        detector = cv::BRIEF::create(threshold, octaves, patternScale);
 
     } else if (detectorType.compare("AKAZE") == 0) {
         detector = cv::AKAZE::create();
@@ -239,7 +238,7 @@ void detKeypointsModern(vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::stri
     } else if (detectorType.compare("SIFT") == 0) {
         detector = cv::xfeatures2d::SIFT::create();
     } else {
-        throw invalid_argument(detectorType + " is not supported, FAST, BRISK, ORB, AKAZE, SIFT are valid detectorTypes");
+        throw invalid_argument(detectorType + " is not supported, FAST, BRIEF, ORB, AKAZE, SIFT are valid detectorTypes");
     }
 
     // perform feature description
